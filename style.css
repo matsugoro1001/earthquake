@@ -87,44 +87,88 @@ h2 { font-size: 2rem; margin-bottom: 2rem; border-bottom: 2px solid var(--border
 .ocean-plate { position: absolute; right: -10%; top: 200px; width: 70%; height: 300px; background: #475569; transform: rotate(15deg); clip-path: polygon(0 0, 100% -20%, 100% 100%, 0 100%); }
 .ocean-plate .crust { color: white; padding: 20px; font-weight: bold; }
 .ocean-plate .arrow-down { color: #ef4444; font-weight: bold; font-size: 1.2rem; margin-left: 50px; animation: slideDown 2s infinite; }
-
-.land-plate { position: absolute; left: 0; top: 150px; width: 50%; height: 250px; background: #854d0e; clip-path: polygon(0 0, 100% 0, 120% 50px, 100% 250px, 0 250px); transform-origin: left bottom; transition: transform 0.5s ease; }
-.land-surface { position: absolute; top: 0; left: 0; width: 100%; height: 30px; background: #65a30d; color: white; padding: 5px 10px; font-weight: bold; }
-.city { position: absolute; top: -30px; left: 50px; font-size: 2rem; transition: transform 0.1s; }
-
-.quake-epicenter { position: absolute; background: rgba(0,0,0,0.8); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; border: 1px solid #ef4444; z-index: 20; opacity: 0; }
-.quake-hypocenter { position: absolute; color: #ef4444; font-weight: bold; font-size: 1.5rem; text-shadow: 0 0 10px yellow; z-index: 20; opacity: 0; }
-.tsunami-wave { position: absolute; top: 80px; right: 35%; font-size: 3rem; opacity: 0; z-index: 6; }
-
-/* Trench Animation */
-#tab-trench .quake-epicenter { top: 30px; left: 35%; color: black; border-color: black; }
-#tab-trench .quake-hypocenter { top: 200px; left: 55%; color: white; text-shadow: 0 0 10px red; }
-
-.animating-trench #img-trench { animation: imageShake 4s forwards; }
-.animating-trench #hypo-trench { animation: explosion 4s forwards; }
-.animating-trench #epi-trench { animation: explosion 4s forwards; }
-
-@keyframes imageShake {
-    0% { transform: scale(1) translateX(0); }
-    40% { transform: scale(1.05) translateX(-5px) translateY(5px); } /* Tension */
-    50%, 70% { transform: scale(1.05) translateX(10px) translateY(-10px); } /* Snap and shake */
-    55%, 65% { transform: scale(1.05) translateX(-10px) translateY(10px); }
-    100% { transform: scale(1) translateX(0) translateY(0); }
+/* --- Simulation Premium Aesthetics --- */
+.mechanism-sim {
+    position: relative;
+    height: 300px;
+    background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
 }
+.sim-sky { position: absolute; top: 0; width: 100%; height: 100px; }
+.sim-sea { position: absolute; top: 80px; right: 0; width: 60%; height: 50px; background: linear-gradient(to bottom, #1E90FF, #00008B); clip-path: polygon(100% 0, 0 100%, 100% 100%); z-index: 2; display: flex; align-items: center; justify-content: flex-end; padding-right: 20px; color: white; font-weight: bold; }
+.tsunami-wave { position: absolute; top: -30px; right: 20%; font-size: 2rem; color: #fff; text-shadow: 0 0 5px blue; opacity: 0; }
 
-/* Inland Animation */
-.inland-epi { top: 30px; left: 45%; color: black; border-color: black; }
-.inland-hypo { top: 180px; left: 45%; color: white; text-shadow: 0 0 10px red; }
+/* Trench System */
+.plate-system { position: absolute; bottom: 0; width: 100%; height: 200px; }
+.ocean-plate { position: absolute; right: -10%; top: 50px; width: 70%; height: 150px; transform: rotate(15deg); transform-origin: top right; z-index: 1; transition: transform 0.5s; }
+.crust-layer { height: 40px; background: linear-gradient(to bottom, #4b5563, #374151); color: white; text-align: center; line-height: 40px; font-weight: bold; border-top: 3px solid #1f2937; }
+.mantle-layer { height: 110px; background: linear-gradient(to bottom, #991b1b, #ef4444, #f59e0b); box-shadow: inset 0 20px 20px rgba(0,0,0,0.5); }
+.arrow-down { position: absolute; top: 10px; left: 20px; color: white; font-size: 2rem; }
 
-.animating-inland #img-inland { animation: inlandImageShake 3s forwards; }
-.animating-inland #hypo-inland { animation: explosion 3s forwards; }
-.animating-inland #epi-inland { animation: explosion 3s forwards; }
+.land-plate { position: absolute; left: 0; top: 20px; width: 55%; height: 180px; z-index: 3; transition: border-radius 0.5s, transform 0.5s; border-bottom-right-radius: 0px; overflow: hidden; }
+.surface-layer { height: 30px; background: linear-gradient(to bottom, #65a30d, #4d7c0f); position: relative; }
+.city { position: absolute; bottom: 5px; right: 20px; font-size: 1.5rem; }
+.continental-crust { height: 150px; background: linear-gradient(to bottom, #d97706, #92400e); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem; text-shadow: 1px 1px 2px black; box-shadow: inset -10px 0 20px rgba(0,0,0,0.3); }
 
-@keyframes inlandImageShake {
-    0%, 40% { transform: scale(1) skewX(2deg); filter: contrast(1.1); }
-    50%, 90% { transform: scale(1.05) translateY(-5px) translateX(5px); }
-    55%, 85% { transform: scale(1.05) translateY(5px) translateX(-5px); }
-    100% { transform: scale(1) skewX(0); filter: contrast(1); }
+/* Trench Animation Classes */
+.animating-trench #ocean-plate { animation: subduct 4s forwards; }
+.animating-trench #land-plate { animation: dragAndSnap 4s forwards; }
+.animating-trench #tsunami-wave { animation: tsunamiExpand 4s forwards; }
+.animating-trench #hypo-trench, .animating-trench #epi-trench { animation: explosion 4s forwards; }
+
+@keyframes subduct { 
+    0% { transform: rotate(15deg) translate(0, 0); } 
+    100% { transform: rotate(15deg) translate(-30px, 30px); } 
+}
+@keyframes dragAndSnap {
+    0% { border-bottom-right-radius: 0px; transform: translateX(0); }
+    40%, 45% { border-bottom-right-radius: 60px; transform: translateX(10px); } /* Dragged down and right */
+    50% { border-bottom-right-radius: 0px; transform: translateX(-5px); } /* SNAP! */
+    60%, 100% { border-bottom-right-radius: 0px; transform: translateX(0); }
+}
+@keyframes tsunamiExpand { 0%, 49% { opacity: 0; transform: scale(1) translateX(0); } 50% { opacity: 1; transform: scale(1) translateX(0); } 100% { opacity: 0; transform: scale(3) translateX(-50px); } }
+@keyframes explosion { 0%, 49% { opacity: 0; } 50%, 60% { opacity: 1; transform: scale(1.5); } 100% { opacity: 0; } }
+
+#tab-trench .quake-epicenter { top: 50px; left: 45%; color: black; border-color: black; z-index: 10; opacity: 0;}
+#tab-trench .quake-hypocenter { top: 150px; left: 45%; color: white; text-shadow: 0 0 10px red; z-index: 10; opacity: 0; }
+
+/* --- Inland System --- */
+.fault-system { position: absolute; bottom: 0; width: 100%; height: 250px; }
+.fault-block { position: absolute; width: 55%; height: 100%; transition: transform 0.2s; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); }
+.left-block { left: -5%; clip-path: polygon(0 0, 100% 0, 75% 100%, 0 100%); z-index: 2;}
+.right-block { right: -5%; clip-path: polygon(25% 0, 100% 0, 100% 100%, 0 100%); z-index: 1;}
+
+.surface-grass { height: 20px; background: linear-gradient(to bottom, #84cc16, #4d7c0f); }
+.surface-road { position: absolute; top: -15px; font-size: 2rem; z-index: 5; }
+.road-left { right: 20%; }
+.road-right { left: 20%; }
+
+.strata { display: flex; align-items: center; justify-content: center; font-weight: bold; color: rgba(255,255,255,0.8); text-shadow: 1px 1px 2px black; }
+.strata-1 { height: 50px; background: linear-gradient(to bottom, #b45309, #92400e); }
+.strata-2 { height: 60px; background: linear-gradient(to bottom, #713f12, #422006); }
+.strata-3 { height: 120px; background: linear-gradient(to bottom, #475569, #1e293b); }
+
+.fault-line-diagonal { position: absolute; left: 47%; top: 0; width: 6px; height: 100%; background: #ef4444; transform: skewX(-14deg); z-index: 3; box-shadow: 0 0 10px red; }
+.push-arrow { position: absolute; top: 100px; color: white; font-weight: bold; font-size: 1.5rem; z-index: 10; text-shadow: 2px 2px 4px black;}
+.left-arrow { left: 20px; }
+.right-arrow { right: 20px; }
+
+.inland-epi { top: 40px; left: 45%; color: black; border-color: black; opacity: 0; z-index: 10; }
+.inland-hypo { top: 150px; left: 45%; color: white; text-shadow: 0 0 10px red; opacity: 0; z-index: 10; }
+
+.animating-inland #left-block { animation: pushLeft 3s forwards; }
+.animating-inland #right-block { animation: pushRight 3s forwards; }
+.animating-inland #hypo-inland, .animating-inland #epi-inland { animation: explosion 3s forwards; }
+
+@keyframes pushLeft { 
+    0%, 40% { transform: translateX(5px); } 
+    50%, 100% { transform: translateY(-20px) translateX(10px); } 
+}
+@keyframes pushRight { 
+    0%, 40% { transform: translateX(-5px); } 
+    50%, 100% { transform: translateY(20px) translateX(-10px); } 
 }
 
 /* Section 3: Magnitude Simulation */
