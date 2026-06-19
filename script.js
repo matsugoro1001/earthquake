@@ -171,8 +171,8 @@ function initSection4() {
 
     // Stations
     const stations = [
-        { name: '観測点A', dist: 60, y: 100 },
-        { name: '観測点B', dist: 120, y: 200 },
+        { name: '観測点A', dist: 60, y: 75 },
+        { name: '観測点B', dist: 120, y: 150 },
         { name: '観測点C', dist: 240, y: 300 }
     ];
 
