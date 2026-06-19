@@ -127,12 +127,16 @@ h2 { font-size: 2rem; margin-bottom: 2rem; border-bottom: 2px solid var(--border
 
 /* Step 2: Subduction & Dragging */
 .step2 #svg-ocean-plate { transform: translate(-40px, 15px); }
-.step2 #svg-land-plate { transform: scaleY(0.95) translate(20px, 10px); transform-origin: 250px 200px; } /* Simulating dragging/skewing tip */
+/* Dragging the tip down using path morphing */
+.step2 #svg-land-crust { d: path("M 0,0 L 40,50 L 150,150 L 200,165 Q 260,250 290,280 Q 360,240 400,350 L 0,300 Z"); }
+.step2 #svg-land-surface { d: path("M 0,0 L 40,50 L 150,150 L 200,165 Q 260,250 290,280 L 0,200 Z"); }
 .step2 #svg-arrow { opacity: 1; }
 
 /* Step 3: Snap Back & Quake */
 .step3 #svg-ocean-plate { transform: translate(-50px, 20px); }
-.step3 #svg-land-plate { transform: scaleY(1) translate(0px, 0px); animation: svgShake 0.5s ease-in-out 3; }
+.step3 #svg-land-crust { d: path("M 0,0 L 40,50 L 150,150 L 200,165 Q 230,170 250,200 Q 350,200 400,350 L 0,300 Z"); }
+.step3 #svg-land-surface { d: path("M 0,0 L 40,50 L 150,150 L 200,165 Q 230,170 250,200 L 0,200 Z"); }
+.step3 #svg-land-plate { animation: svgShake 0.5s ease-in-out 3; }
 .step3 #svg-arrow { opacity: 0; }
 .step3 #svg-quake-boom { opacity: 1; animation: svgShake 0.5s ease-in-out 3; }
 .step3 #svg-quake-ring { opacity: 1; animation: ringExpand 1s forwards; }
@@ -146,6 +150,21 @@ h2 { font-size: 2rem; margin-bottom: 2rem; border-bottom: 2px solid var(--border
     0% { r: 0; opacity: 1; stroke-width: 5; }
     100% { r: 100; opacity: 0; stroke-width: 1; }
 }
+
+/* --- Inland Animation Classes --- */
+/* Step 2: Bulge and tension */
+.inland-step2 #inland-arrow-left { opacity: 1; transform: translateX(20px); }
+.inland-step2 #inland-arrow-right { opacity: 1; transform: translateX(-20px); }
+.inland-step2 #inland-left-block { transform: translateX(5px) scaleY(1.02); }
+.inland-step2 #inland-right-block { transform: translateX(-5px) scaleY(1.02); }
+
+/* Step 3: Quake and Slip */
+.inland-step3 #inland-arrow-left { opacity: 0; }
+.inland-step3 #inland-arrow-right { opacity: 0; }
+.inland-step3 #inland-left-block { transform: translate(15px, -15px); animation: svgShake 0.5s ease-in-out 3; }
+.inland-step3 #inland-right-block { transform: translate(-15px, 15px); animation: svgShake 0.5s ease-in-out 3; }
+.inland-step3 #inland-quake-boom { opacity: 1; animation: svgShake 0.5s ease-in-out 3; }
+.inland-step3 #inland-quake-ring { opacity: 1; animation: ringExpand 1s forwards; }
 
 /* --- Inland System --- */
 .fault-block { position: absolute; width: 100%; height: 100%; transition: transform 0.2s; }

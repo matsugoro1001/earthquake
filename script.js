@@ -122,16 +122,46 @@ function initSection2() {
         });
     }
 
-    // Inland Simulation (Hybrid)
-    const btnInlandSim = document.getElementById('btn-inland-sim');
-    const mechanismSimInland = document.querySelector('#tab-inland .mechanism-sim');
+    // Inland Simulation (3-Step SVG)
+    let inlandStep = 1;
+    const inlandBtn = document.getElementById('inland-next-btn');
+    const inlandText = document.getElementById('inland-dialog-text');
+    const inlandSvg = document.getElementById('inland-svg');
 
-    if (btnInlandSim) {
-        btnInlandSim.addEventListener('click', () => {
-            mechanismSimInland.classList.remove('animating-inland');
-            void mechanismSimInland.offsetWidth; // trigger reflow
-            mechanismSimInland.classList.add('animating-inland');
-            setTimeout(() => mechanismSimInland.classList.remove('animating-inland'), 3000);
+    if (inlandBtn) {
+        inlandBtn.addEventListener('click', () => {
+            if (inlandStep === 1) {
+                // Go to Step 2
+                inlandStep = 2;
+                inlandSvg.className.baseVal = 'trench-svg inland-step2';
+                inlandText.textContent = 'プレートの動きによって、陸の岩盤には両側から強い「押す力」がかかり続けている。';
+                inlandBtn.textContent = '次へ';
+            } else if (inlandStep === 2) {
+                // Go to Step 3
+                inlandStep = 3;
+                inlandSvg.className.baseVal = 'trench-svg inland-step3';
+                inlandText.textContent = '岩盤が耐えきれなくなって破壊されると、活断層がズレて直下型地震が起こる。';
+                inlandBtn.textContent = 'もう一度見る';
+                
+                setTimeout(() => {
+                    document.getElementById('inland-quake-boom').style.animation = 'none';
+                    document.getElementById('inland-quake-ring').style.animation = 'none';
+                    document.getElementById('inland-left-block').style.animation = 'none';
+                    document.getElementById('inland-right-block').style.animation = 'none';
+                    void document.getElementById('inland-quake-boom').offsetWidth;
+                }, 3000);
+            } else {
+                // Reset to Step 1
+                inlandStep = 1;
+                inlandSvg.className.baseVal = 'trench-svg';
+                inlandText.textContent = '内陸の活断層で地震が起こるしくみを見てみよう。';
+                inlandBtn.textContent = '次へ';
+                
+                document.getElementById('inland-quake-boom').style.animation = '';
+                document.getElementById('inland-quake-ring').style.animation = '';
+                document.getElementById('inland-left-block').style.animation = '';
+                document.getElementById('inland-right-block').style.animation = '';
+            }
         });
     }
 }
