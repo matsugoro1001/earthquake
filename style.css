@@ -103,39 +103,49 @@ h2 { font-size: 2rem; margin-bottom: 2rem; border-bottom: 2px solid var(--border
     position: absolute;
     top: 0; left: 0;
 }
-.overlay-label {
-    position: absolute;
-    color: white;
-    padding: 5px 15px;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 1.2rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.5);
-    z-index: 5;
-    pointer-events: none;
+/* --- Trench Interactive 3-Step Simulation --- */
+.trench-container { position: relative; background: #fff; border-radius: 16px; overflow: hidden; padding: 10px; }
+.trench-title { color: #0000ff; font-size: 1.5rem; margin: 0 0 10px 0; font-weight: 900; text-align: left; }
+.trench-dialog {
+    position: absolute; top: 10px; right: 10px; width: 50%; max-width: 350px;
+    background: #fff; border: 4px solid #f97316; border-radius: 12px;
+    padding: 15px; z-index: 20; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
-.tsunami-wave { position: absolute; top: 100px; left: 60%; font-size: 2.5rem; color: #fff; text-shadow: 0 0 10px blue; opacity: 0; z-index: 6; }
-.arrow-down { position: absolute; top: 40px; right: 20px; color: #ef4444; font-size: 2.5rem; font-weight: bold; text-shadow: 0 0 10px black; z-index: 5; opacity: 0; }
-
-/* Trench Animation Classes */
-.animating-trench #img-trench { animation: imageShake 4s forwards; }
-.animating-trench #trench-arrow { animation: fadeInOut 4s forwards; }
-.animating-trench #tsunami-wave { animation: tsunamiExpand 4s forwards; }
-.animating-trench #hypo-trench, .animating-trench #epi-trench { animation: explosion 4s forwards; }
-
-@keyframes imageShake {
-    0% { transform: scale(1) translateX(0); }
-    40% { transform: scale(1.05) translateX(-10px) translateY(10px); } /* Tension */
-    50%, 70% { transform: scale(1.05) translateX(15px) translateY(-15px); } /* Snap and shake */
-    55%, 65% { transform: scale(1.05) translateX(-15px) translateY(15px); }
-    100% { transform: scale(1) translateX(0) translateY(0); }
+.dialog-content { display: flex; align-items: flex-start; gap: 10px; }
+.dialog-icon { font-size: 2rem; line-height: 1; }
+#trench-dialog-text { margin: 0; font-size: 1rem; color: #000; font-weight: bold; line-height: 1.4; }
+.dialog-btn {
+    display: block; margin-top: 10px; margin-left: auto;
+    background: #f97316; color: white; border: none; padding: 5px 20px;
+    border-radius: 6px; font-weight: bold; font-size: 1.1rem; cursor: pointer;
 }
-@keyframes fadeInOut { 0%, 20% { opacity: 0; } 30%, 40% { opacity: 1; transform: translateY(10px); } 100% { opacity: 0; } }
-@keyframes tsunamiExpand { 0%, 49% { opacity: 0; transform: scale(1) translateX(0); } 50% { opacity: 1; transform: scale(1) translateX(0); } 100% { opacity: 0; transform: scale(3) translateX(-30px); } }
-@keyframes explosion { 0%, 49% { opacity: 0; } 50%, 60% { opacity: 1; transform: scale(2); } 100% { opacity: 0; } }
+.dialog-btn:hover { background: #ea580c; }
+.trench-svg { width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 8px; }
 
-#tab-trench .quake-epicenter { top: 80px; left: 45%; color: white; background: rgba(0,0,0,0.5); z-index: 10; opacity: 0;}
-#tab-trench .quake-hypocenter { top: 200px; left: 35%; color: white; text-shadow: 0 0 20px red; font-size: 2rem; z-index: 10; opacity: 0; }
+/* SVG Animation Classes (Controlled via JS) */
+.trench-svg g, .trench-svg path, .trench-svg circle, .trench-svg text { transition: all 1.5s ease-in-out; }
+
+/* Step 2: Subduction & Dragging */
+.step2 #svg-ocean-plate { transform: translate(-40px, 15px); }
+.step2 #svg-land-plate { transform: scaleY(0.95) translate(20px, 10px); transform-origin: 250px 200px; } /* Simulating dragging/skewing tip */
+.step2 #svg-arrow { opacity: 1; }
+
+/* Step 3: Snap Back & Quake */
+.step3 #svg-ocean-plate { transform: translate(-50px, 20px); }
+.step3 #svg-land-plate { transform: scaleY(1) translate(0px, 0px); animation: svgShake 0.5s ease-in-out 3; }
+.step3 #svg-arrow { opacity: 0; }
+.step3 #svg-quake-boom { opacity: 1; animation: svgShake 0.5s ease-in-out 3; }
+.step3 #svg-quake-ring { opacity: 1; animation: ringExpand 1s forwards; }
+
+@keyframes svgShake {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(-5px, 5px); }
+    75% { transform: translate(5px, -5px); }
+}
+@keyframes ringExpand {
+    0% { r: 0; opacity: 1; stroke-width: 5; }
+    100% { r: 100; opacity: 0; stroke-width: 1; }
+}
 
 /* --- Inland System --- */
 .fault-block { position: absolute; width: 100%; height: 100%; transition: transform 0.2s; }

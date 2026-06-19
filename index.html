@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>インタラクティブ地震学習シミュレーター</title>
-    <link rel="stylesheet" href="style.css?v=5">
+    <link rel="stylesheet" href="style.css?v=6">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -116,26 +116,61 @@
                 <button class="tab-btn" data-tab="inland">内陸型地震（活断層）</button>
             </div>
             
-            <!-- Trench Model -->
+            <!-- Trench Model (3-Step Diagram) -->
             <div class="tab-content active" id="tab-trench">
-                <div class="mechanism-sim" style="background: black; border-radius: 16px; overflow: hidden; position: relative;">
-                    <!-- Base Image -->
-                    <img src="trench_model.png" alt="海溝型地震" class="sim-bg-image" id="img-trench">
-                    
-                    <!-- Japanese Overlays -->
-                    <div class="overlay-label" style="top: 10px; left: 10px; background: rgba(0,0,0,0.6);">大陸プレート</div>
-                    <div class="overlay-label" style="bottom: 80px; right: 10px; background: rgba(0,0,0,0.6);">海洋プレート</div>
-                    <div class="overlay-label" style="bottom: 10px; left: 30%; background: rgba(150,0,0,0.6);">マントル（沈み込み）</div>
-                    
-                    <div class="arrow-down" id="trench-arrow">⬇︎ 沈み込む</div>
-                    <div class="tsunami-wave" id="tsunami-wave">🌊 津波発生！</div>
-                    <div class="quake-epicenter" id="epi-trench">震央</div>
-                    <div class="quake-hypocenter" id="hypo-trench">💥 震源</div>
+                <div class="trench-container">
+                    <!-- Title & Dialog -->
+                    <h2 class="trench-title">海溝付近で起こる地震</h2>
+                    <div class="trench-dialog">
+                        <div class="dialog-content">
+                            <span class="dialog-icon">🤖</span>
+                            <p id="trench-dialog-text">海溝で地震が起こるしくみを見てみよう。</p>
+                        </div>
+                        <button class="dialog-btn" id="trench-next-btn">次へ</button>
+                    </div>
+
+                    <!-- SVG Diagram -->
+                    <svg viewBox="0 0 800 500" class="trench-svg" id="trench-svg">
+                        <!-- Sky / Sea -->
+                        <rect x="0" y="0" width="800" height="250" fill="#e0f2fe" />
+                        <rect x="0" y="250" width="800" height="100" fill="#94a3b8" opacity="0.3" /> <!-- Sea water overlay -->
+
+                        <!-- Mantle Layer 1 (Dark Red Bottom) -->
+                        <path d="M 0,350 Q 300,320 800,450 L 800,500 L 0,500 Z" fill="#7f1d1d" />
+                        
+                        <!-- Mantle Layer 2 (Brown Middle) -->
+                        <path d="M 0,300 Q 400,280 800,320 L 800,450 Q 300,320 0,350 Z" fill="#92400e" opacity="0.8"/>
+
+                        <!-- Oceanic Plate Container (Groups oceanic crust to move together) -->
+                        <g id="svg-ocean-plate">
+                            <!-- Oceanic Crust -->
+                            <path d="M 330,220 L 650,180 L 800,300 L 800,350 L 400,350 Z" fill="#9ca3af" stroke="#6b7280" stroke-width="2"/>
+                            <text x="560" y="280" fill="white" font-size="28" font-weight="bold" text-anchor="middle">海洋プレート</text>
+                        </g>
+
+                        <!-- Continental Plate Container (Groups crust to deform/move) -->
+                        <g id="svg-land-plate">
+                            <!-- Continental Crust Body -->
+                            <path d="M 0,0 L 40,50 L 150,150 L 200,165 Q 230,170 250,200 Q 350,200 400,350 L 0,300 Z" fill="#b4c09d" />
+                            <!-- Surface Texture Overlay (Green) -->
+                            <path d="M 0,0 L 40,50 L 150,150 L 200,165 Q 230,170 250,200 L 0,200 Z" fill="#84cc16" opacity="0.4"/>
+                            <text x="180" y="290" fill="black" font-size="28" font-weight="bold" text-anchor="middle">大陸プレート</text>
+                            
+                            <!-- Epicenter Effect -->
+                            <circle cx="350" cy="220" r="0" fill="none" stroke="red" stroke-width="5" id="svg-quake-ring" opacity="0"/>
+                            <text x="350" y="220" font-size="40" text-anchor="middle" dominant-baseline="central" id="svg-quake-boom" opacity="0">💥</text>
+                        </g>
+
+                        <!-- Step 2 Arrow -->
+                        <g id="svg-arrow" opacity="0">
+                            <!-- Blue Arrow -->
+                            <polygon points="450,420 650,380 640,360 440,400" fill="#2563eb" />
+                            <polygon points="430,410 460,380 470,440" fill="#2563eb" />
+                            <text x="680" y="440" fill="white" font-size="24" font-weight="bold" text-anchor="middle">海洋プレートが</text>
+                            <text x="680" y="470" fill="white" font-size="24" font-weight="bold" text-anchor="middle">もぐりこむ</text>
+                        </g>
+                    </svg>
                 </div>
-                <div class="sim-controls">
-                    <button class="btn action-btn" id="btn-trench-sim">▶ 海溝型地震をシミュレート</button>
-                </div>
-                <p class="explanation">海洋プレートが沈み込む際に、大陸プレートの端が摩擦で引きずり込まれ「ゆがみ」がたまります。<br>限界に達すると、大陸プレートが激しく跳ね上がり（弾性反発）、巨大な地震と津波を発生させます。</p>
             </div>
 
             <!-- Inland Model -->
@@ -247,6 +282,6 @@
         <p>Earthquake Explorer - 中学理科 地学シミュレーター</p>
     </footer>
 
-    <script src="script.js?v=5"></script>
+    <script src="script.js?v=6"></script>
 </body>
 </html>

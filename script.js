@@ -78,23 +78,62 @@ function initSection2() {
         });
     });
 
-    const btnTrench = document.getElementById('btn-trench-sim');
-    const trenchSim = document.querySelector('#tab-trench .mechanism-sim');
-    btnTrench.addEventListener('click', () => {
-        trenchSim.classList.remove('animating-trench');
-        void trenchSim.offsetWidth;
-        trenchSim.classList.add('animating-trench');
-        setTimeout(() => trenchSim.classList.remove('animating-trench'), 4000);
-    });
+    /* --- SVG Trench 3-Step Simulation --- */
+    let trenchStep = 1;
+    const trenchBtn = document.getElementById('trench-next-btn');
+    const trenchText = document.getElementById('trench-dialog-text');
+    const trenchSvg = document.getElementById('trench-svg');
 
-    const btnInland = document.getElementById('btn-inland-sim');
-    const inlandSim = document.querySelector('#tab-inland .mechanism-sim');
-    btnInland.addEventListener('click', () => {
-        inlandSim.classList.remove('animating-inland');
-        void inlandSim.offsetWidth;
-        inlandSim.classList.add('animating-inland');
-        setTimeout(() => inlandSim.classList.remove('animating-inland'), 3000);
-    });
+    if (trenchBtn) {
+        trenchBtn.addEventListener('click', () => {
+            if (trenchStep === 1) {
+                // Go to Step 2
+                trenchStep = 2;
+                trenchSvg.className.baseVal = 'trench-svg step2';
+                trenchText.textContent = '海溝では海洋プレートが大陸プレートの下にもぐりこんで、大陸プレートが引きずりこまれている。このため、大陸プレートはゆがむ。';
+                trenchBtn.textContent = '次へ';
+            } else if (trenchStep === 2) {
+                // Go to Step 3
+                trenchStep = 3;
+                trenchSvg.className.baseVal = 'trench-svg step3';
+                trenchText.textContent = '大陸プレートのゆがみが限界に達すると、大陸プレートがはね上がり、プレートの境界付近で地震が起こる。';
+                trenchBtn.textContent = 'もう一度見る';
+                
+                // Reset animation classes after a bit to allow replay
+                setTimeout(() => {
+                    document.getElementById('svg-quake-boom').style.animation = 'none';
+                    document.getElementById('svg-quake-ring').style.animation = 'none';
+                    document.getElementById('svg-land-plate').style.animation = 'none';
+                    // Trigger reflow
+                    void document.getElementById('svg-quake-boom').offsetWidth;
+                }, 3000);
+            } else {
+                // Reset to Step 1
+                trenchStep = 1;
+                trenchSvg.className.baseVal = 'trench-svg';
+                trenchText.textContent = '海溝で地震が起こるしくみを見てみよう。';
+                trenchBtn.textContent = '次へ';
+                
+                // Clear inline animation styles
+                document.getElementById('svg-quake-boom').style.animation = '';
+                document.getElementById('svg-quake-ring').style.animation = '';
+                document.getElementById('svg-land-plate').style.animation = '';
+            }
+        });
+    }
+
+    // Inland Simulation (Hybrid)
+    const btnInlandSim = document.getElementById('btn-inland-sim');
+    const mechanismSimInland = document.querySelector('#tab-inland .mechanism-sim');
+
+    if (btnInlandSim) {
+        btnInlandSim.addEventListener('click', () => {
+            mechanismSimInland.classList.remove('animating-inland');
+            void mechanismSimInland.offsetWidth; // trigger reflow
+            mechanismSimInland.classList.add('animating-inland');
+            setTimeout(() => mechanismSimInland.classList.remove('animating-inland'), 3000);
+        });
+    }
 }
 
 // Section 3: Magnitude
