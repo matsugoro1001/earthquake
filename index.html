@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>インタラクティブ地震学習シミュレーター</title>
-    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="style.css?v=5">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -118,30 +118,19 @@
             
             <!-- Trench Model -->
             <div class="tab-content active" id="tab-trench">
-                <div class="mechanism-sim">
-                    <!-- Sky and Sea -->
-                    <div class="sim-sky"></div>
-                    <div class="sim-sea">
-                        <span class="sea-label">海</span>
-                        <div class="tsunami-wave" id="tsunami-wave">🌊 津波発生！</div>
-                    </div>
+                <div class="mechanism-sim" style="background: black; border-radius: 16px; overflow: hidden; position: relative;">
+                    <!-- Base Image -->
+                    <img src="trench_model.png" alt="海溝型地震" class="sim-bg-image" id="img-trench">
                     
-                    <!-- Plates Container -->
-                    <div class="plate-system">
-                        <div class="ocean-plate" id="ocean-plate">
-                            <div class="crust-layer">海洋プレート（沈み込む）</div>
-                            <div class="mantle-layer"></div>
-                            <div class="arrow-down">⬇︎</div>
-                        </div>
-                        <div class="land-plate" id="land-plate">
-                            <div class="surface-layer">
-                                <div class="city">🏙️ 陸地</div>
-                            </div>
-                            <div class="continental-crust">大陸プレート（引きずられる）</div>
-                        </div>
-                        <div class="quake-epicenter" id="epi-trench">震央</div>
-                        <div class="quake-hypocenter" id="hypo-trench">💥 震源</div>
-                    </div>
+                    <!-- Japanese Overlays -->
+                    <div class="overlay-label" style="top: 10px; left: 10px; background: rgba(0,0,0,0.6);">大陸プレート</div>
+                    <div class="overlay-label" style="bottom: 80px; right: 10px; background: rgba(0,0,0,0.6);">海洋プレート</div>
+                    <div class="overlay-label" style="bottom: 10px; left: 30%; background: rgba(150,0,0,0.6);">マントル（沈み込み）</div>
+                    
+                    <div class="arrow-down" id="trench-arrow">⬇︎ 沈み込む</div>
+                    <div class="tsunami-wave" id="tsunami-wave">🌊 津波発生！</div>
+                    <div class="quake-epicenter" id="epi-trench">震央</div>
+                    <div class="quake-hypocenter" id="hypo-trench">💥 震源</div>
                 </div>
                 <div class="sim-controls">
                     <button class="btn action-btn" id="btn-trench-sim">▶ 海溝型地震をシミュレート</button>
@@ -151,32 +140,27 @@
 
             <!-- Inland Model -->
             <div class="tab-content" id="tab-inland">
-                <div class="mechanism-sim">
-                    <div class="sim-sky"></div>
-                    <div class="fault-system">
-                        <!-- Left Block -->
-                        <div class="fault-block left-block" id="left-block">
-                            <div class="surface-grass"></div>
-                            <div class="surface-road road-left">🛣️</div>
-                            <div class="strata strata-1"></div>
-                            <div class="strata strata-2">活断層</div>
-                            <div class="strata strata-3"></div>
-                            <div class="push-arrow left-arrow">➡︎ 押す力</div>
-                        </div>
-                        <!-- Right Block -->
-                        <div class="fault-block right-block" id="right-block">
-                            <div class="surface-grass"></div>
-                            <div class="surface-road road-right">🛣️</div>
-                            <div class="strata strata-1"></div>
-                            <div class="strata strata-2"></div>
-                            <div class="strata strata-3"></div>
-                            <div class="push-arrow right-arrow">⬅︎ 押す力</div>
-                        </div>
-                        <!-- Line & Markers -->
-                        <div class="fault-line-diagonal"></div>
-                        <div class="quake-epicenter inland-epi" id="epi-inland">震央</div>
-                        <div class="quake-hypocenter inland-hypo" id="hypo-inland">💥 震源</div>
+                <div class="mechanism-sim" style="background: black; border-radius: 16px; overflow: hidden; position: relative;">
+                    
+                    <!-- Left Block (Clipped Image) -->
+                    <div class="fault-block inland-left-block" id="inland-left">
+                        <img src="inland_model.png" alt="内陸型地震 左" class="sim-bg-image">
                     </div>
+                    
+                    <!-- Right Block (Clipped Image) -->
+                    <div class="fault-block inland-right-block" id="inland-right">
+                        <img src="inland_model.png" alt="内陸型地震 右" class="sim-bg-image">
+                    </div>
+                    
+                    <!-- Japanese Overlays -->
+                    <div class="overlay-label" style="top: 20px; left: 10px; background: rgba(0,0,0,0.6);">隆起する地層</div>
+                    <div class="overlay-label" style="bottom: 20px; right: 10px; background: rgba(0,0,0,0.6);">沈降する地層</div>
+                    <div class="overlay-label" style="top: 50%; left: 45%; background: rgba(200,0,0,0.8); transform: rotate(-65deg); border: 2px solid white;">活断層</div>
+                    
+                    <div class="push-arrow left-arrow">➡︎ 押す力</div>
+                    <div class="push-arrow right-arrow">⬅︎ 押す力</div>
+                    <div class="quake-epicenter inland-epi" id="epi-inland">震央</div>
+                    <div class="quake-hypocenter inland-hypo" id="hypo-inland">💥 震源</div>
                 </div>
                 <div class="sim-controls">
                     <button class="btn action-btn" id="btn-inland-sim">▶ 内陸型地震をシミュレート</button>
@@ -263,6 +247,6 @@
         <p>Earthquake Explorer - 中学理科 地学シミュレーター</p>
     </footer>
 
-    <script src="script.js?v=4"></script>
+    <script src="script.js?v=5"></script>
 </body>
 </html>
